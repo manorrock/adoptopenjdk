@@ -1,4 +1,4 @@
-FROM manorrock/debian:buster
+FROM manorrock/debian
 RUN apt-get update && \
     apt-get install -y curl tar gzip && \
     cd /usr/local && \
