@@ -2,7 +2,7 @@ name: build
 on: 
   push:
     branches:
-      - '*'
+      - 'master'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,19 +15,13 @@ jobs:
         password: ${{ secrets.DOCKER_HUB_PASSWORD }}
     - name: Build amd64 image
       run: |
-        if [[ "$GITHUB_REF" == "refs/heads/master" ]]; then
-          export $GITHUB_REF=latest
-        fi
-        echo $GITHUB_REF
-        echo $PWD
-        ls
-        docker build -f Dockerfile.amd64 -t manorrock/adoptopenjdk:amd64-$GITHUB_REF .
-        docker push manorrock/adoptopenjdk:amd64-$GITHUB_REF
+        docker build -f Dockerfile.amd64 -t manorrock/adoptopenjdk:amd64-latest .
+        docker push manorrock/adoptopenjdk:amd64-latest
     - name: Push Docker manifest
       run: |
         export DOCKER_CLI_EXPERIMENTAL=enabled
-        docker manifest create manorrock/adoptopenjdk:$GITHUB_REF \
-          manorrock/adoptopenjdk:amd64-$GITHUB_REF
-        docker manifest annotate manorrock/adoptopenjdk:$GITHUB_REF \
-          manorrock/adoptopenjdk:amd64-$GITHUB_REF --os linux --arch amd64
-        docker manifest push manorrock/adoptopenjdk:$GITHUB_REF
+        docker manifest create manorrock/adoptopenjdk:latest \
+          manorrock/adoptopenjdk:amd64-latest
+        docker manifest annotate manorrock/adoptopenjdk:latest \
+          manorrock/adoptopenjdk:amd64-latest --os linux --arch amd64
+        docker manifest push manorrock/adoptopenjdk:latest
