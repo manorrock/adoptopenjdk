@@ -15,7 +15,7 @@ jobs:
         password: ${{ secrets.DOCKER_HUB_PASSWORD }}
     - name: Build amd64 image
       run: |
-        if [[ "$GITHUB_REF" == "refs/heads/naster" ]]; then
+        if [[ "$GITHUB_REF" == "refs/heads/master" ]]; then
           export $GITHUB_REF=latest
         fi
         echo $GITHUB_REF
