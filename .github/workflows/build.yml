@@ -1,0 +1,29 @@
+name: build
+on: 
+  push:
+    branches:
+      - '*'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Login to Docker Hub
+      uses: azure/docker-login@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Build amd64 image
+      run: |
+        if [ CI_REFNAME == 'master' ]; then
+          CI_REF_NAME=latest
+        fi
+        docker build -f Dockerfile.amd64 -t manorrock/adoptopenjdk:amd64-$CI_REF_NAME .
+        docker push manorrock/adoptopenjdk:amd64-$CI_REF_NAME
+    - name: Push Docker manifest
+      run: |
+        export DOCKER_CLI_EXPERIMENTAL=enabled
+        docker manifest create manorrock/adoptopenjdk:$CI_REF_NAME \
+          manorrock/adoptopenjdk:amd64-$CI_REF_NAME
+        docker manifest annotate manorrock/adoptopenjdk:$CI_REF_NAME \
+          manorrock/adoptopenjdk:amd64-$CI_REF_NAME --os linux --arch amd64
+        docker manifest push manorrock/adoptopenjdk:$CI_REF_NAME
