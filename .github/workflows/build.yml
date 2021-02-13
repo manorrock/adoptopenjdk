@@ -15,19 +15,19 @@ jobs:
         password: ${{ secrets.DOCKER_HUB_PASSWORD }}
     - name: Build amd64 image
       run: |
-        if [[ "$CI_REF_NAME" == "master" ]]; then
-          export CI_REF_NAME=latest
+        if [[ "$GITHUB_REF" == "refs/heads/naster" ]]; then
+          export $GITHUB_REF=latest
         fi
-        echo $CI_REF_NME
+        echo $GITHUB_REF
         echo $PWD
         ls
-        docker build -f Dockerfile.amd64 -t manorrock/adoptopenjdk:amd64-$CI_REF_NAME .
-        docker push manorrock/adoptopenjdk:amd64-$CI_REF_NAME
+        docker build -f Dockerfile.amd64 -t manorrock/adoptopenjdk:amd64-$GITHUB_REF .
+        docker push manorrock/adoptopenjdk:amd64-$GITHUB_REF
     - name: Push Docker manifest
       run: |
         export DOCKER_CLI_EXPERIMENTAL=enabled
-        docker manifest create manorrock/adoptopenjdk:$CI_REF_NAME \
-          manorrock/adoptopenjdk:amd64-$CI_REF_NAME
-        docker manifest annotate manorrock/adoptopenjdk:$CI_REF_NAME \
-          manorrock/adoptopenjdk:amd64-$CI_REF_NAME --os linux --arch amd64
-        docker manifest push manorrock/adoptopenjdk:$CI_REF_NAME
+        docker manifest create manorrock/adoptopenjdk:$GITHUB_REF \
+          manorrock/adoptopenjdk:amd64-$GITHUB_REF
+        docker manifest annotate manorrock/adoptopenjdk:$GITHUB_REF \
+          manorrock/adoptopenjdk:amd64-$GITHUB_REF --os linux --arch amd64
+        docker manifest push manorrock/adoptopenjdk:$GITHUB_REF
