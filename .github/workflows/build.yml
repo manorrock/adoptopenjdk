@@ -17,6 +17,9 @@ jobs:
         if [[ "$CI_REF_NAME" == "master" ]]; then
           export CI_REF_NAME=latest
         fi
+        echo $CI_REF_NME
+        echo $PWD
+        ls
         docker build -f Dockerfile.amd64 -t manorrock/adoptopenjdk:amd64-$CI_REF_NAME .
         docker push manorrock/adoptopenjdk:amd64-$CI_REF_NAME
     - name: Push Docker manifest
