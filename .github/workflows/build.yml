@@ -14,7 +14,7 @@ jobs:
         password: ${{ secrets.DOCKER_HUB_PASSWORD }}
     - name: Build amd64 image
       run: |
-        if [ "$CI_REF_NAME" == "master" ]; then
+        if [[ "$CI_REF_NAME" == "master" ]]; then
           CI_REF_NAME=latest
         fi
         docker build -f Dockerfile.amd64 -t manorrock/adoptopenjdk:amd64-$CI_REF_NAME .
