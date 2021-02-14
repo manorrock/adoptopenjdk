@@ -29,7 +29,6 @@ jobs:
         git config --global user.name "Automated release"
         git commit -a -m "Releasing version $VERSION" --allow-empty
         git tag v$VERSION -f
-        git push origin :v$VERSION || true
-        git push origin v$VERSION
+        git push origin v$VERSION -f
         git checkout $BRANCH
         git branch -D release
