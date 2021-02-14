@@ -1,4 +1,4 @@
-# Manorrock AdoptOpenJDK docker image
+# AdoptOpenJDK docker image delivered by Manorrock.com
 
 There are several ways to use this container. A couple of examples are illustrated below:
 
